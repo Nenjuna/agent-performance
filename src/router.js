@@ -5,6 +5,7 @@ import Login from "./components/Login";
 import Add from "./components/Add";
 import PageNotFound from "./components/PageNotFound";
 import firebase from "firebase";
+import firebaseApp from "@/firebasejs/firebaseinit";
 
 Vue.use(Router);
 
@@ -48,29 +49,38 @@ let router = new Router({
     {
       path: "*",
       name: "PageNotFound",
-      component: PageNotFound
+      component: PageNotFound,
+      meta: {
+        requiresGuest: true
+      }
     }
   ]
 });
 
 // Nav prevent
 
-router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (!firebase.auth().currentUser) {
+router.beforeEach((to, from, next) =>
+{
+  if (to.matched.some(record => record.meta.requiresAuth))
+  {
+    if (!firebase.auth().currentUser)
+    {
       next({
         path: "/login",
         query: {
           redirect: to.fullPath
         }
       });
-    } else {
+    } else
+    {
       //proceed to route
       next();
     }
-  } else if (to.matched.some(record => record.meta.requiresGuest)) {
+  } else if (to.matched.some(record => record.meta.requiresGuest))
+  {
     // Check if NO logged user
-    if (firebase.auth().currentUser) {
+    if (firebase.auth().currentUser)
+    {
       // Go to login
       next({
         path: "/",
@@ -78,7 +88,8 @@ router.beforeEach((to, from, next) => {
           redirect: to.fullPath
         }
       });
-    } else {
+    } else
+    {
       // Proceed to route
       next();
     }

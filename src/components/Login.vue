@@ -30,6 +30,7 @@
 
 <script>
 import firebase from "firebase";
+import firebaseApp from "@/firebasejs/firebaseinit";
 
 export default {
   name: "login",
@@ -45,7 +46,7 @@ export default {
         .auth()
         .signInWithEmailAndPassword(this.email, this.password)
         .then(user => {
-          alert(`You have been succesfully logged in with ${user.email}`);
+          //alert(`You have been succesfully logged in with ${user.email}`);
           this.$router.push("/");
         })
         .catch(err => {
