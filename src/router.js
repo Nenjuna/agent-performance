@@ -5,7 +5,7 @@ import Login from "./components/Login";
 import Add from "./components/Add";
 import PageNotFound from "./components/PageNotFound";
 import firebase from "firebase";
-import firebaseApp from "@/firebasejs/firebaseinit";
+import "@/firebasejs/firebaseinit";
 
 Vue.use(Router);
 

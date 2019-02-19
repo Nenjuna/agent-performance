@@ -9,10 +9,16 @@
           </router-link>
         </strong>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
-          <li>
+          <li v-if="isLoggedIn">
+            <span class="email black-text">{{userda}}</span>
+          </li>
+          <li v-if="isLoggedIn">
+            <span class="email black-text">{{userid}}</span>
+          </li>
+          <li v-if="isLoggedIn">
             <router-link to="/add">Add Data</router-link>
           </li>
-          <li>
+          <li v-if="!isLoggedIn">
             <router-link to="/login">Login</router-link>
           </li>
           <li>
@@ -30,9 +36,20 @@ export default {
   data() {
     return {
       isLoggedIn: false,
-      currentUser: false
+      currentUser: false,
+      userda: "",
+
+      userid: ""
     };
   },
+  created() {
+    if (firebase.auth().currentUser) {
+      this.isLoggedIn = true;
+      this.userda = firebase.auth().currentUser.email;
+      this.userid = firebase.auth().currentUser.uid;
+    }
+  },
+
   methods: {
     logout: function() {
       firebase
