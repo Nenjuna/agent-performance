@@ -21,7 +21,10 @@
           <li v-if="!isLoggedIn">
             <router-link to="/login">Login</router-link>
           </li>
-          <li>
+          <li v-if="!isLoggedIn">
+            <router-link to="/signup">Register</router-link>
+          </li>
+          <li v-if="isLoggedIn">
             <button v-on:click="logout" class="btn black">Log Out</button>
           </li>
         </ul>

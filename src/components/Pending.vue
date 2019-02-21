@@ -37,13 +37,18 @@ export default {
       });
     const contacts = data => {
       for (let i = 0; i < data.length; i++) {
-        const ind = data[i];
-        const indi = ind.data();
-        //this.guider.push(indi);
-        //console.log(ind);
-        //console.log(indi);
+        const indi = data[i].data();
+        //console.log(data[i].type);
+
         this.guider.push(indi);
       }
+      db.collection("contacts").onSnapshot(result => {
+        result.docChanges().forEach(change => {
+          const docu = { ...change.doc.data(), id: change.doc.id };
+          console.log(docu);
+        });
+        console.log(result.docChanges());
+      });
       //   data.forEach(doc => {
       //     var docdata = null;
       //     docdata = doc.data();
