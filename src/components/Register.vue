@@ -23,14 +23,14 @@
               <input type="text" id="lastname" v-model="lastName">
               <label for="lastname">Last Name:</label>
             </div>
-            <div class="inpt-field">
+            <div class="input-field">
               <select class="browser-default" v-model="selectTeam">
                 <option value disabled selected>Choose your Team</option>
                 <option value="Vinothini">Vinothini</option>
                 <option value="Azhar">Azhar</option>
               </select>
             </div>
-            <div class="inpt-field">
+            <div class="input-field">
               <select class="browser-default" v-model="selectManager">
                 <option value disabled selected>Choose your Manager</option>
                 <option value="Madhu">Madhu Priya</option>
@@ -83,6 +83,7 @@ export default {
               Team_Lead: this.selectTeam,
               Manager: this.selectManager
             });
+          this.$router.push("/");
         })
         .catch(err => {
           console.log(err.message);

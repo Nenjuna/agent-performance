@@ -28,7 +28,7 @@
                 <label for="notes">Notes</label>
               </div>
               <div class="col 13 s6">
-                <div class="iinput-field col s12">
+                <div class="input-field">
                   <select class="browser-default">
                     <option value disabled selected>Choose your option</option>
                     <option value="resolved">Resolved</option>
@@ -49,7 +49,7 @@
     </div>
     <div class="container">
       <div class="card">
-        <div class="card-content hoverable">
+        <div class="card-content">
           <Pending/>
         </div>
       </div>
@@ -59,7 +59,9 @@
 </template>
 
 <script>
-import db from "@/firebasejs/firebaseinit";
+import firebase from "firebase";
+import db from "../firebasejs/firebaseinit";
+
 import AgentChart from "@/components/AgentChart";
 import Pending from "@/components/Pending";
 export default {
@@ -72,6 +74,7 @@ export default {
     return {
       contactid: "",
       notes: "",
+      userid: "",
       error_message: ""
     };
   },
@@ -80,10 +83,12 @@ export default {
       db.collection("contacts")
         .add({
           contactid: this.contactid,
-          notes: this.notes
+          notes: this.notes,
+          userid: firebase.auth().currentUser.uid
         })
         .then(() => {
           console.log("Document Written");
+          console.log(firebase.auth().currentUser.uid);
         })
         .catch(err => {
           error_message = err.message;

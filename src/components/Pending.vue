@@ -9,7 +9,7 @@
       </thead>
 
       <tbody>
-        <tr v-for="(guide, index) in guider" :key="index">
+        <tr v-for="guide in guider" :key="guide.id">
           <td>{{guide.contactid}}</td>
           <td>{{guide.notes}}</td>
         </tr>
@@ -40,15 +40,39 @@ export default {
         const indi = data[i].data();
         //console.log(data[i].type);
 
-        this.guider.push(indi);
+        // this.guider.push(indi);
       }
+      console.log(this.guider.length);
       db.collection("contacts").onSnapshot(result => {
         result.docChanges().forEach(change => {
-          const docu = { ...change.doc.data(), id: change.doc.id };
-          console.log(docu);
+          if (change.type == "added") {
+            let docu = change.doc;
+            //  console.log(docu.doc.userid);
+            //console.log(...change.doc.data());
+
+            //console.log(docu.userid);
+            //console.log(docu.data().userid);
+
+            if (docu.data().userid == firebase.auth().currentUser.uid) {
+              this.guider.push({
+                ...change.doc.data(),
+                id: change.doc.id,
+                type: change.type
+              });
+              //console.log(change.doc.userid);
+
+              //console.log(firebase.auth().currentUser.uid);
+            }
+
+            //  console.log(guider);
+            //this.guider.push(docu);
+          }
         });
+        //console.log(guider.data().userid);
+
         console.log(result.docChanges());
       });
+
       //   data.forEach(doc => {
       //     var docdata = null;
       //     docdata = doc.data();

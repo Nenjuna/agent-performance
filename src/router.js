@@ -5,6 +5,8 @@ import Login from "./components/Login";
 import Register from "./components/Register"
 import Add from "./components/Add";
 import PageNotFound from "./components/PageNotFound";
+import Test from "./components/Test"
+import Chart from './components/Chart'
 import firebase from "firebase";
 import "@/firebasejs/firebaseinit";
 
@@ -18,6 +20,22 @@ let router = new Router({
       path: "/",
       name: "home",
       component: Home,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: "/chart",
+      name: "chart",
+      component: Chart,
+      meta: {
+        requiresGuest: true
+      }
+    },
+    {
+      path: "/test",
+      name: "test",
+      component: Test,
       meta: {
         requiresAuth: true
       }
