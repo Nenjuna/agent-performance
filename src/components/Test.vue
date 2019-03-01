@@ -1,7 +1,5 @@
 <template>
   <div id="test">
-    <h2>This is somedata on the line</h2>
-    <div class="date teal-text">{{date}}</div>
     <div class="container">
       <form class="card">
         <div class="card-content">
@@ -20,7 +18,7 @@
               </div>
               <div class="col 13 s6">
                 <div class="input-field">
-                  <select class="browser-default">
+                  <select class="browser-default" v-model="selected">
                     <option value disabled selected>Choose your option</option>
                     <option value="resolved">Resolved</option>
                     <option value="followup">Follow up</option>
@@ -50,33 +48,75 @@ export default {
     return {
       date: null,
       contactid: "",
+      selected: "",
       notes: "",
       userid: "",
-      error_message: ""
+      error_message: "",
+      uid: firebase.auth().currentUser.uid,
+      userEmail: "",
+      userTeam: "",
+      userManager: ""
     };
   },
   methods: {
     add(e) {
+      const lead = this.userEmail;
+      console.log(lead);
       db.collection("testcollection")
-        .doc(firebase.auth().currentUser.uid)
+        .doc(this.userEmail)
         .collection(this.date)
         .add({
           contactid: this.contactid,
           notes: this.notes,
-          userid: firebase.auth().currentUser.uid
+          userid: firebase.auth().currentUser.uid,
+          resolved: this.selected
         })
         .then(() => {
           console.log("Document Written");
-          console.log(firebase.auth().currentUser.uid);
+          db.collection("testcollection")
+            .doc(this.userEmail)
+            .set({
+              lead: lead,
+              notes: this.notes,
+              date: this.date
+            })
+            .then(() => {
+              console.log(this.notes);
+              console.log("Duplication preventer");
+            })
+            .catch(error => {
+              console.log(error.message);
+            });
+          // console.log(firebase.auth().currentUser.uid);
         })
         .catch(err => {
           error_message = err.message;
         });
-      (this.contactid = ""), (this.notes = " ");
+
+      (this.contactid = ""), (this.notes = "");
       e.preventDefault();
     }
   },
   created() {
+    db.collection("users").onSnapshot(users => {
+      users.docChanges().forEach(user => {
+        // console.log(user.doc.id);
+        if (this.uid == user.doc.id) {
+          this.userEmail = user.doc.data().Team_Lead;
+          // console.log(this.userEmail);
+        }
+      });
+    });
+
+    db.collection("testcollection")
+      .doc("${userEmail}")
+      .collection("27-Feb-2019")
+      .onSnapshot(result => {
+        result.docChanges().forEach(responses => {
+          console.log(responses.doc.data().contactid);
+        });
+      });
+
     function formatDate(date) {
       var monthNames = [
         "Jan",

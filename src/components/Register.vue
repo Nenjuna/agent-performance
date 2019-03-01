@@ -83,7 +83,6 @@ export default {
               Team_Lead: this.selectTeam,
               Manager: this.selectManager
             });
-          this.$router.push("/");
         })
         .catch(err => {
           console.log(err.message);
@@ -96,6 +95,7 @@ export default {
       //  console.log(this.selectManager);
       //console.log("Clicked");
       e.preventDefault();
+      this.$router.push("/");
     }
   }
 };
