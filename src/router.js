@@ -6,6 +6,7 @@ import Register from "./components/Register"
 import Add from "./components/Add";
 import PageNotFound from "./components/PageNotFound";
 import Test from "./components/Test"
+import Tester from "./components/Tester"
 import Chart from './components/Chart'
 import firebase from "firebase";
 import "@/firebasejs/firebaseinit";
@@ -36,6 +37,14 @@ let router = new Router({
       path: "/test",
       name: "test",
       component: Test,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: "/tester",
+      name: "Tester",
+      component: Tester,
       meta: {
         requiresAuth: true
       }

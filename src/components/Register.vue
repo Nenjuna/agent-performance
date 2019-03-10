@@ -78,22 +78,16 @@ export default {
             .collection("users")
             .doc(resp.user.uid)
             .set({
-              Name: this.firstName,
-              LastName: this.lastName,
-              Team_Lead: this.selectTeam,
-              Manager: this.selectManager
+              firstName: this.firstName,
+              lastName: this.lastName,
+              teamLead: this.selectTeam,
+              teamManager: this.selectManager
             });
         })
         .catch(err => {
           console.log(err.message);
         });
-      //console.log(this.email);
-      //console.log(this.password);
-      //console.log(this.firstName);
-      //console.log(this.lastName);
-      // console.log(this.selectTeam);
-      //  console.log(this.selectManager);
-      //console.log("Clicked");
+
       e.preventDefault();
       this.$router.push("/");
     }

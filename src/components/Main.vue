@@ -1,12 +1,5 @@
 <template>
   <div id="main">
-    <div class="chips">
-      <div class="chip">
-        <img src="../assets/image.jpg" alt="Contact Person">
-        Jane Doe
-      </div>
-    </div>
-
     <div class="col 12">
       <h2>Dashboard</h2>
     </div>

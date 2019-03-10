@@ -5,6 +5,7 @@
         <div class="card-content">
           <div class="row">
             <div class="col 13 s6">
+              <Tester/>
               <p>
                 <span>{{error_message}}</span>
               </p>
@@ -35,15 +36,36 @@
           </div>
         </div>
       </form>
+      <table>
+      <thead>
+        <tr>
+          <th>Contacts</th>
+          <th>Comments</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr v-for="guide in guider" :key="guide.id">
+          <td>{{guide.contactid}}</td>
+          <td>{{guide.notes}}</td>
+        </tr>
+      </tbody>
+    </table>
     </div>
   </div>
 </template>
 <script>
 import firebase from "firebase";
 import db from "../firebasejs/firebaseinit";
+import Tester from "@/components/Tester";
+import { Promise } from 'q';
+
 //import moment from "moment";
 export default {
   name: "test",
+  components: {
+    Tester
+  },
   data() {
     return {
       date: null,
@@ -54,8 +76,11 @@ export default {
       error_message: "",
       uid: firebase.auth().currentUser.uid,
       userEmail: "",
+      team: [],
       userTeam: "",
-      userManager: ""
+      userManager: "",
+      test: [],
+      guider: []
     };
   },
   methods: {
@@ -76,9 +101,9 @@ export default {
           db.collection("testcollection")
             .doc(this.userEmail)
             .set({
-              lead: lead,
-              notes: this.notes,
-              date: this.date
+              lead: lead
+
+              // date: this.date
             })
             .then(() => {
               console.log(this.notes);
@@ -95,27 +120,44 @@ export default {
 
       (this.contactid = ""), (this.notes = "");
       e.preventDefault();
+    },
+    leadFunction(e){
+      console.log(this.Email)
+      e.preventDefault();
+    },
+
+    callBack(){
+      console.log("some")
+      
     }
   },
   created() {
-    db.collection("users").onSnapshot(users => {
-      users.docChanges().forEach(user => {
-        // console.log(user.doc.id);
-        if (this.uid == user.doc.id) {
-          this.userEmail = user.doc.data().Team_Lead;
-          // console.log(this.userEmail);
-        }
-      });
-    });
+    let self = this  
+        db.collection("users").doc(firebase.auth().currentUser.uid).get().then(function(doc) {
+            if (doc.exists) {
+              self.teamLead = doc.data().teamLead
+              console.log(self.teamLead)
 
-    db.collection("testcollection")
-      .doc("${userEmail}")
-      .collection("27-Feb-2019")
-      .onSnapshot(result => {
-        result.docChanges().forEach(responses => {
-          console.log(responses.doc.data().contactid);
+        db.collection("testcollection").doc(self.teamLead).collection("1-Mar-2019").onSnapshot(res=>{
+      res.docChanges().forEach(change => {
+        let changes = change.doc;
+          self.guider.push({
+                ...change.doc.data(),
+                id: change.doc.id,
+                type: change.type
+              });
+
+});
+});
+             
+            }        
         });
-      });
+
+  
+
+
+  
+
 
     function formatDate(date) {
       var monthNames = [
@@ -140,7 +182,7 @@ export default {
       return day + "-" + monthNames[monthIndex] + "-" + year;
     }
 
-    this.date = formatDate(new Date());
+    self.date = formatDate(new Date());
   }
 };
 </script>

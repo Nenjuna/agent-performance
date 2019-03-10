@@ -30,10 +30,17 @@
         </ul>
       </div>
     </nav>
+    <div class="chips">
+      <div class="chip">
+        <img src="../assets/image.jpg" alt="Contact Person">
+        {{username}}
+      </div>
+    </div>
   </div>
 </template>
 <script>
 import firebase from "firebase";
+import db from "@/firebasejs/firebaseinit";
 export default {
   name: "Navbar",
   data() {
@@ -41,8 +48,9 @@ export default {
       isLoggedIn: false,
       currentUser: false,
       userda: "",
-
-      userid: ""
+      username: "",
+      userid: "",
+      teamLead: ""
     };
   },
   created() {
@@ -50,6 +58,16 @@ export default {
       this.isLoggedIn = true;
       this.userda = firebase.auth().currentUser.email;
       this.userid = firebase.auth().currentUser.uid;
+      db.collection("users").onSnapshot(result => {
+        result.docChanges().forEach(user => {
+          let users = user.doc;
+          if (user.doc.id == this.userid) {
+            // console.log(users.data().firstName);
+            this.username = users.data().firstName;
+            this.teamLead = users.data().teamLead;
+          }
+        });
+      });
     }
   },
 
@@ -70,7 +88,7 @@ export default {
 .nav-wrapper {
   padding-left: 20px;
   padding-right: 20px;
-  background: #0964aa;
+  background: #00b0ff;
 }
 span {
   color: red;

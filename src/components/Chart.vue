@@ -49,9 +49,4 @@ export default {
 };
 </script>
 <style>
-.card-content {
-  padding: 0;
-  display: block;
-  margin: 0;
-}
 </style>
