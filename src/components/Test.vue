@@ -85,10 +85,10 @@ export default {
   },
   methods: {
     add(e) {
-      const lead = this.userEmail;
+      const lead = this.teamLead;
       console.log(lead);
       db.collection("testcollection")
-        .doc(this.userEmail)
+        .doc(this.teamLead)
         .collection(this.date)
         .add({
           contactid: this.contactid,
@@ -99,20 +99,16 @@ export default {
         .then(() => {
           console.log("Document Written");
           db.collection("testcollection")
-            .doc(this.userEmail)
+            .doc(this.teamLead)
             .set({
               lead: lead
-
-              // date: this.date
             })
             .then(() => {
-              console.log(this.notes);
-              console.log("Duplication preventer");
             })
             .catch(error => {
               console.log(error.message);
             });
-          // console.log(firebase.auth().currentUser.uid);
+          
         })
         .catch(err => {
           error_message = err.message;
@@ -120,16 +116,16 @@ export default {
 
       (this.contactid = ""), (this.notes = "");
       e.preventDefault();
-    },
-    leadFunction(e){
-      console.log(this.Email)
-      e.preventDefault();
-    },
-
-    callBack(){
-      console.log("some")
-      
     }
+    // leadFunction(e){
+    //   console.log(this.Email)
+    //   e.preventDefault();
+    // },
+
+    // callBack(){
+    //   console.log("some")
+      
+    // }
   },
   created() {
     let self = this  
@@ -138,7 +134,7 @@ export default {
               self.teamLead = doc.data().teamLead
               console.log(self.teamLead)
 
-        db.collection("testcollection").doc(self.teamLead).collection("1-Mar-2019").onSnapshot(res=>{
+        db.collection("testcollection").doc(self.teamLead).collection(self.date).onSnapshot(res=>{
       res.docChanges().forEach(change => {
         let changes = change.doc;
           self.guider.push({
