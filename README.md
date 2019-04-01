@@ -1,5 +1,7 @@
 # agent-performance
 
+
+A project with vue js and firebase to visualize the performance of agents, using the charts
 ## Project setup
 ```
 npm install
